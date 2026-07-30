@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>문예린 — Unity 실시간 3D 개발자</title>
+<meta name="description" content="디지털트윈 플랫폼부터 게임까지, 실시간 3D를 만드는 Unity 개발자 문예린의 포트폴리오">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+<style>
+  :root{
+    --bg:#fafafa; --surface:#ffffff; --text:#1a1d24; --muted:#5c6370;
+    --accent:#3b6ef5; --accent-soft:#e8eefe; --line:#e4e6ea;
+    --shadow:0 2px 16px rgba(20,24,40,.07);
+  }
+  [data-theme="dark"]{
+    --bg:#0f1117; --surface:#181b23; --text:#e8eaef; --muted:#9aa2b1;
+    --accent:#7d9dff; --accent-soft:#232c45; --line:#272b36;
+    --shadow:0 2px 16px rgba(0,0,0,.35);
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    font-family:"Pretendard Variable",Pretendard,-apple-system,"Segoe UI","Malgun Gothic",sans-serif;
+    background:var(--bg);color:var(--text);line-height:1.65;
+    transition:background .3s,color .3s;
+  }
+  a{color:var(--accent);text-decoration:none}
+  a:hover{text-decoration:underline}
+  .wrap{max-width:960px;margin:0 auto;padding:0 24px}
+
+  nav{
+    position:sticky;top:0;z-index:50;background:color-mix(in srgb,var(--bg) 85%,transparent);
+    backdrop-filter:blur(10px);border-bottom:1px solid var(--line);
+  }
+  .nav-inner{display:flex;align-items:center;justify-content:space-between;height:56px}
+  .nav-name{font-weight:700;font-size:15px;color:var(--text)}
+  .nav-links{display:flex;gap:20px;align-items:center}
+  .nav-links a{font-size:14px;color:var(--muted)}
+  .nav-links a:hover{color:var(--accent);text-decoration:none}
+  #theme-btn{
+    border:1px solid var(--line);background:var(--surface);color:var(--text);
+    width:32px;height:32px;border-radius:8px;cursor:pointer;font-size:14px;
+  }
+
+  .hero{padding:72px 0 56px;display:flex;gap:28px;align-items:center;flex-wrap:wrap}
+  .avatar{
+    width:88px;height:88px;border-radius:50%;overflow:hidden;flex-shrink:0;
+    border:2px solid var(--line);background:var(--accent-soft);
+    display:flex;align-items:center;justify-content:center;
+    font-size:30px;font-weight:800;color:var(--accent);
+  }
+  .avatar img{width:100%;height:100%;object-fit:cover;display:block}
+  .hero h1{font-size:32px;font-weight:800;letter-spacing:-.5px}
+  .hero .tagline{font-size:17px;color:var(--muted);margin-top:6px}
+  .hero .links{margin-top:14px;display:flex;gap:14px;flex-wrap:wrap;font-size:14px}
+  .hero .links a{display:inline-flex;align-items:center;gap:5px;color:var(--muted);
+    border:1px solid var(--line);border-radius:20px;padding:5px 14px;background:var(--surface)}
+  .hero .links a:hover{color:var(--accent);border-color:var(--accent);text-decoration:none}
+
+  .strengths{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:64px}
+  .strengths .card{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:18px 20px;box-shadow:var(--shadow)}
+  .strengths b{display:block;font-size:14px;margin-bottom:6px;color:var(--accent)}
+  .strengths p{font-size:13.5px;color:var(--muted)}
+
+  section{padding:40px 0}
+  h2{font-size:22px;font-weight:800;margin-bottom:24px;letter-spacing:-.3px;display:flex;align-items:center;gap:10px}
+  h2::after{content:"";flex:1;height:1px;background:var(--line)}
+
+  .job-head{display:flex;justify-content:space-between;flex-wrap:wrap;gap:4px;margin-bottom:4px}
+  .job-head b{font-size:17px}
+  .job-head span{font-size:14px;color:var(--muted)}
+  .job-sub{font-size:14px;color:var(--muted);margin-bottom:20px}
+
+  .grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px}
+  .proj{
+    background:var(--surface);border:1px solid var(--line);border-radius:14px;
+    padding:20px 22px;cursor:pointer;box-shadow:var(--shadow);
+    transition:transform .15s,border-color .15s;
+  }
+  .proj:hover{transform:translateY(-3px);border-color:var(--accent)}
+  .proj .tags{display:flex;gap:6px;margin-bottom:10px;flex-wrap:wrap}
+  .tag{font-size:11.5px;font-weight:700;padding:3px 9px;border-radius:12px;background:var(--accent-soft);color:var(--accent)}
+  .proj h3{font-size:16px;margin-bottom:6px}
+  .proj .desc{font-size:13.5px;color:var(--muted)}
+  .proj .period{font-size:12px;color:var(--muted);margin-top:10px;opacity:.8}
+  .proj .more{font-size:12.5px;color:var(--accent);margin-top:8px;font-weight:600}
+
+  .paper-list li,.award-list li{
+    list-style:none;padding:10px 0;border-bottom:1px solid var(--line);
+    font-size:14.5px;display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;
+  }
+  .paper-list .tag,.award-list span.when{color:var(--muted);font-size:13px;flex-shrink:0}
+  .highlight{color:var(--accent);font-weight:700}
+
+  .skills{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+  .skills .card{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:16px 18px}
+  .skills b{font-size:13px;color:var(--muted);display:block;margin-bottom:8px;text-transform:uppercase;letter-spacing:.5px}
+  .chips{display:flex;flex-wrap:wrap;gap:6px}
+  .chip{font-size:13px;border:1px solid var(--line);border-radius:8px;padding:3px 10px;background:var(--bg)}
+
+  footer{border-top:1px solid var(--line);margin-top:48px;padding:36px 0;text-align:center;color:var(--muted);font-size:14px}
+
+  dialog{
+    border:none;border-radius:18px;padding:0;max-width:640px;width:calc(100% - 40px);
+    background:var(--surface);color:var(--text);box-shadow:0 12px 48px rgba(0,0,0,.3);
+  }
+  dialog::backdrop{background:rgba(10,12,20,.55);backdrop-filter:blur(3px)}
+  .modal-body{padding:30px 32px;max-height:80vh;overflow-y:auto}
+  .modal-body .tags{display:flex;gap:6px;margin-bottom:12px;flex-wrap:wrap}
+  .modal-body h3{font-size:20px;margin-bottom:4px}
+  .modal-body .meta{font-size:13.5px;color:var(--muted);margin-bottom:18px}
+  .modal-body h4{font-size:14px;color:var(--accent);margin:18px 0 6px}
+  .modal-body ul{padding-left:18px}
+  .modal-body li{font-size:14px;margin-bottom:5px}
+  .modal-body p{font-size:14px}
+  .modal-shot{
+    margin-top:16px;border:1px dashed var(--line);border-radius:10px;
+    padding:28px;text-align:center;color:var(--muted);font-size:13px;background:var(--bg);
+  }
+  .modal-shots{margin-top:16px;display:flex;flex-direction:column;gap:10px}
+  .modal-shots img{max-width:100%;border-radius:10px;border:1px solid var(--line);display:block}
+  #modal-close{
+    position:absolute;top:14px;right:14px;border:none;background:var(--accent-soft);
+    color:var(--accent);width:32px;height:32px;border-radius:50%;cursor:pointer;font-size:16px;font-weight:700;
+  }
+
+  @media (max-width:720px){
+    .strengths{grid-template-columns:1fr}
+    .grid{grid-template-columns:1fr}
+    .skills{grid-template-columns:1fr 1fr}
+    .hero{padding:48px 0 40px}
+    .hero h1{font-size:26px}
+    .nav-links a:not(:last-child){display:none}
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="wrap nav-inner">
+    <div class="nav-name">MOON YERIN</div>
+    <div class="nav-links">
+      <a href="#experience">Experience</a>
+      <a href="#projects">Projects</a>
+      <a href="#research">Research</a>
+      <a href="#skills">Skills</a>
+      <button id="theme-btn" title="테마 전환">◐</button>
+    </div>
+  </div>
+</nav>
+
+<div class="wrap">
+
+  <header class="hero">
+    <!-- profile.jpg를 같은 폴더에 넣으면 사진이 표시되고, 없으면 이니셜로 대체됨 -->
+    <div class="avatar" id="avatar"><img src="profile.jpg" alt="문예린" onerror="this.parentElement.textContent='YR'"></div>
+    <div>
+      <h1>문예린 <span style="font-size:16px;font-weight:500;color:var(--muted)">Yerin Moon</span></h1>
+      <p class="tagline">디지털트윈 플랫폼부터 게임까지, 실시간 3D를 만드는 Unity 개발자</p>
+      <div class="links">
+        <a href="mailto:fls1211@naver.com">✉ fls1211@naver.com</a>
+        <a href="https://github.com/dPfls1211" target="_blank">GitHub</a>
+        <a href="https://pleasefixthebug.tistory.com" target="_blank">Blog</a>
+      </div>
+    </div>
+  </header>
+
+  <div class="strengths">
+    <div class="card"><b>Unity 실시간 3D</b><p>디지털트윈 플랫폼 클라이언트 설계·구현, VR/AR 연구·개발 4년</p></div>
+    <div class="card"><b>실험 기반 문제 해결</b><p>원인 불명의 문제를 변수 통제 실험으로 규명하고 구조적 개선안까지 제시</p></div>
+    <div class="card"><b>경계 없는 협업</b><p>기획자와 내부 설계를 함께 논의, 전시 현장 장애를 팀과 분담 해결</p></div>
+  </div>
+
+  <section id="experience">
+    <h2>Work Experience</h2>
+    <div class="job-head"><b>그렉터 — 기업부설연구소 1팀 연구원</b><span>2023.05 – 2024.09 (1년 5개월)</span></div>
+    <p class="job-sub">스마트시티 인프라 디지털트윈 플랫폼 개발 · 개발 2 / 디자인 1 / 기획 1 팀에서 클라이언트 개발 담당</p>
+    <div class="grid" id="career-grid"></div>
+  </section>
+
+  <section id="projects">
+    <h2>Game Projects</h2>
+    <div class="grid" id="game-grid"></div>
+  </section>
+
+  <section id="research">
+    <h2>Research</h2>
+    <ul class="paper-list">
+      <li><span>[Unity/HoloLens] 가상환경에서 무게감을 전달하는 도르래 방식 VR 인터페이스</span></li>
+      <li><span>[Unity/AR] AR 객체 증강 위치 보간을 위한 새로운 ICP 매칭</span></li>
+      <li><span>[Unity/VR] 걷기·뛰기·절름걸이·좀비 움직임을 표현하는 몰입형 VR 보행 인터페이스</span></li>
+      <li><span>[Unity/AR] 실린더 기반 각도 보간으로 특징점 매칭 계산량 <span class="highlight">97.5% 감소</span></span></li>
+    </ul>
+    <h2 style="margin-top:40px">Awards</h2>
+    <ul class="award-list">
+      <li><span>한국컴퓨터정보학회 논문 우수상</span><span class="when">2022.07</span></li>
+      <li><span>제6회 용인시 대학연합 창업아이디어 경진대회 우수상</span><span class="when">2020.10</span></li>
+      <li><span>KTcs 유니벤처 경진대회 장려상</span><span class="when">2020.09</span></li>
+      <li><span>강남대학교 창업아이디어 경진대회 대상</span><span class="when">2020.06</span></li>
+      <li><span>4차 산업혁명 3D프린팅 아이디어톤 한국정보화진흥원 원장상</span><span class="when">2019.12</span></li>
+    </ul>
+  </section>
+
+  <section id="skills">
+    <h2>Skills</h2>
+    <div class="skills">
+      <div class="card"><b>Engine / Language</b><div class="chips"><span class="chip">Unity</span><span class="chip">Unreal</span><span class="chip">C#</span><span class="chip">C++</span><span class="chip">Python</span></div></div>
+      <div class="card"><b>Web</b><div class="chips"><span class="chip">React</span><span class="chip">Vue</span><span class="chip">Babylon.js</span></div></div>
+      <div class="card"><b>Data</b><div class="chips"><span class="chip">Firebase</span><span class="chip">MySQL</span></div></div>
+      <div class="card"><b>XR</b><div class="chips"><span class="chip">HoloLens</span><span class="chip">Oculus</span><span class="chip">ARFoundation</span><span class="chip">PCL</span></div></div>
+      <div class="card"><b>Collaboration</b><div class="chips"><span class="chip">Git</span><span class="chip">Figma</span><span class="chip">Slack</span></div></div>
+      <div class="card"><b>Education / Cert</b><div class="chips"><span class="chip">강남대 소프트웨어응용학부 (가상현실)</span><span class="chip">정보처리기사</span></div></div>
+    </div>
+  </section>
+
+</div>
+
+<footer>
+  <div>문예린 · fls1211@naver.com · <a href="https://github.com/dPfls1211">GitHub</a> · <a href="https://pleasefixthebug.tistory.com">Blog</a></div>
+</footer>
+
+<dialog id="modal">
+  <button id="modal-close" aria-label="닫기">×</button>
+  <div class="modal-body" id="modal-content"></div>
+</dialog>
+
+<script>
+// 프로젝트 데이터. shot에 이미지 경로를 넣으면 모달에 표시되고, null이면 자리표시 문구가 나옴
+const projects = {
+  career: [
+    {
+      id:"torymap", tags:["Unity","전시"], title:"TORYMAP — 스마트 인프라 관리 플랫폼",
+      desc:"랜드마크별 인프라를 3D 지도에서 관리하는 디지털트윈 플랫폼", period:"2023.06 – 2023.09",
+      meta:"Unity · 4인 팀 · 클라이언트 개발 담당",
+      problem:["지자체 인프라 정보가 문서와 개별 시스템에 흩어져 공간 맥락 없이 관리됨","월드 스마트시티 엑스포 전시라는 고정 데드라인"],
+      action:["메인페이지 설계·구현 — 도시 전체에서 개별 인프라로 좁혀가는 탐색 흐름","랜드마크별 인프라 콘텐츠 관리 기능 개발","전시 당일 키오스크 연결 장애를 동료와 분담해 현장에서 해결"],
+      result:["2023 월드 스마트시티 엑스포 전시 성공, 클라이언트 긍정 피드백","타 지자체 키오스크 도입 제안으로 확장"],
+      shots:["img/torymap-1.png","img/torymap-2.png"]
+    },
+    {
+      id:"aliot", tags:["React","Babylon.js"], title:"Aliot-DT — IoT 대시보드 CMS",
+      desc:"IoT 장치를 실제 공간 위치 기반으로 확인하는 3D 대시보드", period:"2023.09 – 2024.01",
+      meta:"React · 클라이언트 개발 담당",
+      problem:["기존 대시보드는 장치를 그리드에 나열만 해 공간 정보가 없음"],
+      action:["메인페이지 · 3D-builder · 시설물 상세보기 페이지 설계·구현","그리드 나열을 실제 공간 배치 기반 확인 방식으로 개선","Unity의 3D 개념을 웹 3D로 옮기며 React를 실무 수준으로 학습"],
+      result:["장치의 공간 위치 확인이 가능한 데모 버전 완성"],
+      shots:["img/aliot-1.png","img/aliot-2.png"]
+    },
+    {
+      id:"sim", tags:["Unity","시뮬레이션"], title:"Simulation 테스트",
+      desc:"로봇청소기 통신·지하차도 수위 시나리오의 시뮬레이션 검증", period:"2024.02 – 2024.08",
+      meta:"Unity · 테스트 설계·수행 담당",
+      problem:["실물 없이 장치·재난 시나리오를 검증해야 함","3D 객체가 특정 조건에서 깨지는 원인 불명 문제 발생"],
+      action:["로봇청소기 통신·수위 시뮬레이션 테스트 설계·수행","의심 변수를 하나씩 통제한 실험으로 좌표 기준점 차이가 원인임을 특정","좌표 설정 기준 개선안을 정리해 팀에 제시"],
+      result:["원인 규명·수정, 개선안 반영으로 동일 문제 재발 방지","Aliot-DT 애니메이션 구현의 기술 기반 마련"],
+      shots:["img/sim-robot.gif","img/sim-water.gif"]
+    },
+    {
+      id:"dx", tags:["Vue","특허 출원"], title:"DX-STUDIO — 사내 대시보드 CMS",
+      desc:"대시보드를 사내에서 직접 구성·관리하는 CMS", period:"2024.02 – 2024.08",
+      meta:"Vue · Contents Viewer, 데이터 저장 구조 담당",
+      problem:["대시보드를 만들 때마다 개발자가 새로 구축해야 하는 반복 비용"],
+      action:["Contents Viewer 페이지 구현","콘텐츠 저장·복원 스키마 등 데이터 저장 구조 설계"],
+      result:["사내 실사용 도구로 도입","정부 프로젝트 수행, 관련 특허 출원 진행"],
+      shots:["img/dx-1.png","img/dx-2.png"]
+    }
+  ],
+  game: [
+    {
+      id:"cat", tags:["Unity","C#","2인 개발"], title:"고양이 힐링 게임",
+      desc:"고양이를 키우며 미니게임으로 성장시키는 캐주얼 힐링 게임", period:"2025.07 – ",
+      meta:"Unity · 미니게임·성장 시스템 담당 · 프로토타입",
+      problem:["미니게임-보상-능력치가 순환하는 코어 루프 설계가 필요"],
+      action:["아케이드형 미니게임 2종(쥐 잡기, 먹이 수집) 개발","고양이 능력치와 미니게임 연동 구조 구현","게임 종료 후 보상 지급 로직 구현","미니게임을 독립 모듈로 구성해 추가 시 루프 수정이 없도록 구조화"],
+      result:["코어 루프가 동작하는 프로토타입 완성"],
+      shots:["img/cat-1.png","img/cat-2.png"]
+    },
+    {
+      id:"penguin", tags:["Unity","게임 잼","로그라이트"], title:"펭귄어드벤처",
+      desc:"72시간 게임 잼에서 완성한 라운드제 로그라이트", period:"2024.11 · 레드브릭 온라인 게임 잼",
+      meta:"Unity · 3인 팀 · 게임 시스템 담당",
+      problem:["72시간 안에 처음부터 끝까지 플레이 가능한 게임을 완성해야 함"],
+      action:["라운드·몬스터·궁극기 등 게임 시스템 구축","플레이어 이동·카메라 연동, 스킬 애니메이션·충돌 효과","라운드·몬스터 수치를 설정값으로 분리해 코드 수정 없이 밸런싱"],
+      result:["기한 내 완주 가능한 빌드로 게임 잼 출품"],
+      shots:["img/penguin-1.png","img/penguin-2.png"]
+    },
+    {
+      id:"runa", tags:["Unity","퍼즐"], title:"Runa",
+      desc:"단서를 모아 암호를 푸는 추리 퍼즐 게임", period:"2023.02 – 2023.03",
+      meta:"Unity · 3인 팀 · 퍼즐·인벤토리 담당",
+      problem:["스토리 진행과 퍼즐 해결이 자연스럽게 맞물리는 구조가 필요"],
+      action:["캐릭터 대사창, 암호 퍼즐, 카드 배열 퍼즐 구현","인벤토리 관리 — 수집한 단서가 퍼즐의 열쇠가 되는 연결"],
+      result:["퍼즐 해결이 스토리 분기를 트리거하는 구조로 완성"],
+      shots:["img/runa-1.jpg"]
+    }
+  ]
+};
+
+function card(p){
+  const el=document.createElement("div");
+  el.className="proj";
+  el.innerHTML=`
+    <div class="tags">${p.tags.map(t=>`<span class="tag">${t}</span>`).join("")}</div>
+    <h3>${p.title}</h3>
+    <p class="desc">${p.desc}</p>
+    <p class="period">${p.period}</p>
+    <p class="more">자세히 보기 →</p>`;
+  el.addEventListener("click",()=>openModal(p));
+  return el;
+}
+projects.career.forEach(p=>document.getElementById("career-grid").appendChild(card(p)));
+projects.game.forEach(p=>document.getElementById("game-grid").appendChild(card(p)));
+
+const modal=document.getElementById("modal");
+function openModal(p){
+  const list=a=>a.map(x=>`<li>${x}</li>`).join("");
+  document.getElementById("modal-content").innerHTML=`
+    <div class="tags">${p.tags.map(t=>`<span class="tag">${t}</span>`).join("")}</div>
+    <h3>${p.title}</h3>
+    <p class="meta">${p.period} · ${p.meta}</p>
+    <h4>문제</h4><ul>${list(p.problem)}</ul>
+    <h4>내가 한 일</h4><ul>${list(p.action)}</ul>
+    <h4>결과</h4><ul>${list(p.result)}</ul>
+    ${p.shots&&p.shots.length
+      ?`<div class="modal-shots">${p.shots.map(s=>`<img src="${s}" alt="${p.title} 스크린샷" loading="lazy">`).join("")}</div>`
+      :`<div class="modal-shot">스크린샷 준비 중</div>`}`;
+  modal.showModal();
+}
+document.getElementById("modal-close").addEventListener("click",()=>modal.close());
+modal.addEventListener("click",e=>{ if(e.target===modal) modal.close(); });
+
+// 테마: 시스템 설정을 따르되 버튼으로 전환, 선택은 저장
+const root=document.documentElement;
+const saved=localStorage.getItem("theme");
+if(saved) root.dataset.theme=saved;
+else if(matchMedia("(prefers-color-scheme: dark)").matches) root.dataset.theme="dark";
+document.getElementById("theme-btn").addEventListener("click",()=>{
+  const next=root.dataset.theme==="dark"?"light":"dark";
+  root.dataset.theme=next; localStorage.setItem("theme",next);
+});
+</script>
+</body>
+</html>
