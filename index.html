@@ -400,7 +400,8 @@ const projects = {
     {
       id:"penguin", tags:["Unity","게임 잼","뱀서라이크"], title:"펭귄어드벤처",
       desc:"72시간 게임 잼에서 완성한 2D 뱀서라이크", period:"2024.11 · 레드브릭 온라인 게임 잼",
-      meta:"Unity · 3인 팀 · 게임 시스템 담당",
+      meta:"Unity · 3인 팀 · 게임 시스템 담당 · 웹에서 바로 플레이 가능",
+      link:"https://penguin-build.vercel.app/", linkLabel:"▶ PLAY NOW",
       problem:["72시간 안에 처음부터 끝까지 플레이 가능한 게임을 완성해야 함"],
       action:["라운드·몬스터·궁극기 등 게임 시스템 구축","플레이어 이동·카메라 연동, 스킬 애니메이션·충돌 효과","게임 오버 결과를 Firebase 실시간 랭크 시스템으로 연동","라운드·몬스터 수치를 설정값으로 분리해 코드 수정 없이 밸런싱"],
       result:["기한 내 완주 가능한 빌드로 게임 잼 출품"],
@@ -487,7 +488,7 @@ function card(p){
     <h3>${p.title}</h3>
     <p class="desc">${p.desc}</p>
     <p class="period">${p.period}</p>
-    ${p.link?`<a class="store-mini px" href="${p.link}" target="_blank">▶ GOOGLE PLAY</a>`:""}<p class="more px" style="display:inline-block">▶ OPEN</p>`;
+    ${p.link?`<a class="store-mini px" href="${p.link}" target="_blank">${p.linkLabel||"▶ GOOGLE PLAY"}</a>`:""}<p class="more px" style="display:inline-block">▶ OPEN</p>`;
   el.addEventListener("click",e=>{ if(e.target.closest("a")) return; openModal(p); });
   return el;
 }
@@ -502,7 +503,7 @@ function openModal(p){
     <div class="tags">${p.goldTag?`<span class="tag gold px">★ ${p.goldTag}</span>`:""}${p.tags.map(t=>`<span class="tag">${t}</span>`).join("")}</div>
     <h3>${p.title}</h3>
     <p class="meta">${p.period} · ${p.meta}</p>
-    ${p.link?`<p style="margin-bottom:6px"><a class="px" href="${p.link}" target="_blank" style="display:inline-block;border:2px solid var(--gold);color:var(--gold);background:var(--gold-soft);padding:5px 14px;font-size:11px;text-decoration:none">▶ GOOGLE PLAY</a></p>`:""}
+    ${p.link?`<p style="margin-bottom:6px"><a class="px" href="${p.link}" target="_blank" style="display:inline-block;border:2px solid var(--gold);color:var(--gold);background:var(--gold-soft);padding:5px 14px;font-size:11px;text-decoration:none">${p.linkLabel||"▶ GOOGLE PLAY"}</a></p>`:""}
     <h4>QUEST</h4><ul>${list(p.problem)}</ul>
     <h4>ACTION</h4><ul>${list(p.action)}</ul>
     <h4>RESULT</h4><ul>${list(p.result)}</ul>
