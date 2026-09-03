@@ -140,6 +140,12 @@
   .proj .desc{font-size:13.5px;color:var(--muted)}
   .proj .period{font-size:12px;color:var(--muted);margin-top:10px;opacity:.85}
   .proj .more{font-size:11px;color:var(--accent);margin-top:10px}
+  .store-mini{
+    display:inline-block;margin-top:10px;margin-right:10px;font-size:10px;
+    border:2px solid var(--gold);color:var(--gold);background:var(--gold-soft);
+    padding:4px 10px;text-decoration:none;
+  }
+  .store-mini:hover{text-decoration:none;transform:translateY(1px)}
 
   /* 스킬 도감 / 업적 */
   .paper-list li,.award-list li{
@@ -481,8 +487,8 @@ function card(p){
     <h3>${p.title}</h3>
     <p class="desc">${p.desc}</p>
     <p class="period">${p.period}</p>
-    <p class="more px">▶ OPEN</p>`;
-  el.addEventListener("click",()=>openModal(p));
+    ${p.link?`<a class="store-mini px" href="${p.link}" target="_blank">▶ GOOGLE PLAY</a>`:""}<p class="more px" style="display:inline-block">▶ OPEN</p>`;
+  el.addEventListener("click",e=>{ if(e.target.closest("a")) return; openModal(p); });
   return el;
 }
 projects.career.forEach(p=>document.getElementById("career-grid").appendChild(card(p)));
