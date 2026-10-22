@@ -166,6 +166,20 @@
   .skills b{font-size:10px;color:var(--muted);display:block;margin-bottom:10px;letter-spacing:.5px}
   .chips{display:flex;flex-wrap:wrap;gap:6px}
   .chip{font-size:12.5px;border:1px solid var(--line);padding:3px 9px;background:var(--bg)}
+  /* 세부정보가 있는 스킬 칩: 누르면 스킬 팝업 */
+  .chip.has-info{cursor:pointer;border-color:var(--text);transition:transform .08s steps(2)}
+  .chip.has-info:hover,.chip.has-info:focus-visible{color:var(--accent);border-color:var(--accent);background:var(--accent-soft);transform:translate(-1px,-1px);outline:none}
+  .skill-hint{font-size:11px;color:var(--muted);margin:-6px 0 14px}
+  .gauge{height:14px;border:2px solid var(--text);background:var(--bg);margin:4px 0 6px}
+  .gauge i{display:block;height:100%;background:repeating-linear-gradient(90deg,var(--accent) 0 10px,transparent 10px 12px)}
+  .gauge-label{font-size:12px;color:var(--muted)}
+  .skill-proj{list-style:none;padding-left:0!important}
+  .skill-proj li{border-bottom:1px dotted var(--line);padding:7px 0;display:flex;gap:10px;justify-content:space-between;align-items:center}
+  .skill-proj li>span{flex:1;min-width:0}
+  .skill-proj .pname{font-weight:700}
+  .skill-proj .pdesc{display:block;font-size:13px;color:var(--muted);font-weight:400}
+  .skill-proj button{font:inherit;font-size:10px;border:1px solid var(--line);background:none;color:var(--muted);padding:2px 8px;cursor:pointer;white-space:nowrap}
+  .skill-proj button:hover{color:var(--accent);border-color:var(--accent)}
 
   footer{border-top:2px solid var(--line);margin-top:48px;padding:40px 0;text-align:center;color:var(--muted);font-size:13px}
   footer .continue{font-size:14px;margin-bottom:14px}
@@ -314,9 +328,10 @@
 
   <section id="skills">
     <h2 class="px">STATUS</h2>
+    <p class="skill-hint px">▶ 스킬을 누르면 숙련도와 사용한 프로젝트를 볼 수 있어요</p>
     <div class="skills">
       <div class="card"><b class="px">ENGINE / LANG</b><div class="chips"><span class="chip">Unity</span><span class="chip">Unreal</span><span class="chip">C#</span><span class="chip">C++</span><span class="chip">Python</span></div></div>
-      <div class="card"><b class="px">WEB</b><div class="chips"><span class="chip">React</span><span class="chip">Vue</span><span class="chip">Babylon.js</span></div></div>
+      <div class="card"><b class="px">WEB</b><div class="chips"><span class="chip">JavaScript</span><span class="chip">React</span><span class="chip">Vue</span><span class="chip">Babylon.js</span></div></div>
       <div class="card"><b class="px">DATA</b><div class="chips"><span class="chip">Firebase</span><span class="chip">MySQL</span></div></div>
       <div class="card"><b class="px">XR</b><div class="chips"><span class="chip">HoloLens</span><span class="chip">Oculus</span><span class="chip">ARFoundation</span><span class="chip">PCL</span></div></div>
       <div class="card"><b class="px">PARTY PLAY</b><div class="chips"><span class="chip">Git</span><span class="chip">Figma</span><span class="chip">Slack</span></div></div>
@@ -524,6 +539,81 @@ function openModal(p){
       :`<div class="modal-shot px">NOW LOADING . . .</div>`}`;
   modal.showModal();
 }
+// ---------- STATUS 스킬 세부정보 ----------
+// lv/pct는 노션 스킬 DB 값. used의 id는 projects의 id(누르면 해당 프로젝트 팝업), anchor는 섹션 이동
+const SKILLS={
+  "Unity":{cat:"GAME-Engine",lv:"중급",pct:70,used:[
+    {n:"TORYMAP",d:"메인페이지·인프라 콘텐츠 관리, 홀로그램·물·거울 반사 셰이더",id:"torymap"},
+    {n:"안치당 전시관",d:"Unity 6 · URP 2D, 1인 개발",id:"anchidang"},
+    {n:"RUNA",d:"퍼즐·인벤토리 구현, 2026 Unity 6 마이그레이션·재배포",id:"runa"},
+    {n:"펭귄어드벤처",d:"라운드·몬스터·스킬 등 게임 시스템",id:"penguin"},
+    {n:"고양이 힐링 게임",d:"미니게임 2종·능력치 연동",id:"cat"},
+    {n:"VR·AR 논문 4편",d:"보행·도르래 VR 인터페이스, AR 특징점 매칭",anchor:"research"}]},
+  "Unreal":{cat:"GAME-Engine",pct:20,note:"학부 수업에서 학습했고, 프로젝트 제작 경험은 아직 없습니다."},
+  "C#":{cat:"Language",used:[
+    {n:"TORYMAP",d:"Unity 클라이언트·셰이더 연동",id:"torymap"},
+    {n:"안치당 전시관",d:"시간 상태 머신·BFS 추격 AI·세이브 시스템",id:"anchidang"},
+    {n:"RUNA",d:"대사창·퍼즐·인벤토리",id:"runa"},
+    {n:"펭귄어드벤처",d:"게임 시스템·스킬",id:"penguin"},
+    {n:"고양이 힐링 게임",d:"미니게임·보상 로직",id:"cat"}]},
+  "C++":{cat:"Language",used:[
+    {n:"AR 논문 2편",d:"실린더 기반 각도 보간, 새로운 ICP 매칭 (ARFoundation)",anchor:"research"}]},
+  "Python":{cat:"Language",used:[
+    {n:"AR ICP 매칭 논문",d:"점 구름 매칭 실험",anchor:"research"},
+    {n:"VR 보행 인터페이스 논문",d:"아두이노 자이로 센서 데이터를 차트로 시각화해 움직임 패턴 설정",anchor:"research"}]},
+  "JavaScript":{cat:"WEB",lv:"중급",pct:70,used:[
+    {n:"Aliot-DT",d:"IoT 대시보드 CMS (React)",id:"aliot"},
+    {n:"Simulation TEST",d:"웹 3D 시뮬레이션 (React · Babylon.js)",id:"sim"},
+    {n:"DX-STUDIO",d:"사내 대시보드 CMS (Vue)",id:"dx"}]},
+  "React":{cat:"WEB",used:[
+    {n:"Aliot-DT",d:"메인페이지·3D-builder·3D 시설물 상세보기",id:"aliot"},
+    {n:"Simulation TEST",d:"로봇청소기 통신·지하차도 수위 시뮬레이션",id:"sim"}]},
+  "Vue":{cat:"WEB",used:[
+    {n:"DX-STUDIO",d:"Contents Viewer 구현, 데이터 저장 구조 설계",id:"dx"}]},
+  "Babylon.js":{cat:"WEB",lv:"중급",pct:80,used:[
+    {n:"Simulation TEST",d:"실시간 데이터를 3D 모델로 렌더링, 좌표 기준점 문제 실험으로 규명",id:"sim"}]},
+  "Firebase":{cat:"Database",lv:"중급",pct:50,used:[
+    {n:"펭귄어드벤처",d:"게임 오버 결과를 실시간 랭킹으로 연동",id:"penguin"},
+    {n:"AR ICP 매칭 논문",d:"PointCloud 위치·회전 좌표 저장과 실시간 비교",anchor:"research"}]},
+  "MySQL":{cat:"Database",lv:"초급",pct:20},
+  "HoloLens":{cat:"XR",used:[
+    {n:"도르래 방식 VR 인터페이스 논문",d:"HoloLens 2 손 추적(MRTK)과 Arduino 무게 제어 연동",anchor:"research"}]},
+  "ARFoundation":{cat:"XR",used:[
+    {n:"AR 논문 2편",d:"평면 생성 없이 특징점만으로 증강, ICP 계산량 감소",anchor:"research"}]},
+  "Git":{cat:"협업",used:[
+    {n:"안치당 전시관",d:"코드·씬·에셋 3분할 커밋 규칙으로 280커밋 이상 운영",id:"anchidang"},
+    {n:"이 포트폴리오",d:"GitHub Pages로 배포·관리"}]},
+  "Figma":{cat:"협업",lv:"기타",pct:60},
+  "정보처리기사":{cat:"Certificate",lv:"합격",pct:100,note:"한국산업인력공단 · 2022.06 취득"},
+  "강남대 소프트웨어응용학부 (가상현실)":{cat:"Education",note:"2018.03 ~ 2022.08 졸업 · 주전공 가상현실 / 부전공 소프트웨어 · 학점 4.12 / 4.5"}
+};
+function openSkill(name){
+  const s=SKILLS[name];
+  document.getElementById("modal-nametag").textContent=name;
+  const gauge=s.pct!=null?`<h4>LEVEL</h4><div class="gauge"><i style="width:${s.pct}%"></i></div><div class="gauge-label px">${s.lv?s.lv+" · ":""}${s.pct}%</div>`:"";
+  const used=s.used&&s.used.length?`<h4>USED IN</h4><ul class="skill-proj">${s.used.map((u,i)=>`<li><span><span class="pname">${u.n}</span><span class="pdesc">${u.d}</span></span>${u.id||u.anchor?`<button class="px" data-i="${i}">▶ OPEN</button>`:""}</li>`).join("")}</ul>`:"";
+  document.getElementById("modal-content").innerHTML=`
+    <div class="tags"><span class="tag">${s.cat}</span>${s.lv?`<span class="tag">${s.lv}</span>`:""}</div>
+    <h3>${name}</h3>
+    ${s.note?`<p class="meta">${s.note}</p>`:""}
+    ${gauge}${used}`;
+  document.querySelectorAll("#modal-content .skill-proj button").forEach(b=>b.addEventListener("click",()=>{
+    const u=s.used[+b.dataset.i];
+    if(u.id){ const p=[...projects.career,...projects.game].find(x=>x.id===u.id); if(p){ modal.close(); openModal(p); } }
+    else if(u.anchor){ modal.close(); document.getElementById(u.anchor).scrollIntoView({behavior:"smooth"}); }
+  }));
+  if(!modal.open) modal.showModal();
+}
+document.querySelectorAll("#skills .chip").forEach(c=>{
+  const name=c.textContent.trim();
+  if(!SKILLS[name]) return;
+  c.classList.add("has-info");
+  c.setAttribute("role","button");
+  c.setAttribute("tabindex","0");
+  c.addEventListener("click",()=>openSkill(name));
+  c.addEventListener("keydown",e=>{ if(e.key==="Enter"||e.key===" "){ e.preventDefault(); openSkill(name); } });
+});
+
 document.getElementById("modal-close").addEventListener("click",()=>modal.close());
 modal.addEventListener("click",e=>{ if(e.target===modal) modal.close(); });
 
